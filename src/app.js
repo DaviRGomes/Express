@@ -1,52 +1,21 @@
 import express from 'express';
+import conectNaDatabase from './config/dbConfig.js';
+import routes from './routes/index.js';
+
+
+const conection = await conectNaDatabase();
+
+conection.on("error", (err) => {
+    console.error("Erro de conexão", err);
+});
+
+conection.once("open", ()=>{
+    console.log("Conexão com o banco feita com sucesso");
+});
+
 
 const app = express();
-app.use(express.json()); // Middleware para interpretar JSON
+routes(app);
 
-const livros = [
-    {
-        id: 1,
-        título: "O Senhor dos Anéis"
-    },
-    {
-        id: 2,
-        título: "O Hobbit"
-    }
-];
 
-function getLivroById(id){
-    return livros.findIndex(livro => {
-        return livro.id === Number(id)
-    })
-}
-
-app.get("/",(req, res) => {
-    res.status(200).send("Quem nasce da carne eh carne, e o que eh nascido do Espirito eh espirito");
-});
-
-app.get("/livros", (req, res) => {
-    res.status(200).json(livros);
-});
-
-app.get("/livros/:id", (req, res) =>{
-    const index = getLivroById(req.params.id);
-    res.status(200).json(livros[index]);
-})
-
-app.post("/livros", (req, res) => {
-    livros.push(req.body);
-    res.status(201).send("Livro cadastrado com sucesso");
-})
-
-app.put("/livros/:id", (req, res) => {
-    const index = getLivroById(req.params.id);
-    livros[index].título = req.body.titulo;
-    res.status(200).json(livros[index]);
-})
-
-app.delete('/livros/:id', (req, res) => {
-    const index = getLivroById(req.params.id);
-    livros.splice(index, 1);
-    res.status(204).send();
-})
 export default app;

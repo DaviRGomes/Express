@@ -1,6 +1,8 @@
 import express from 'express';
 import livros from './livrosRoutes.js';
-import e from 'express';
+import autores from "./autorRoutes.js";
+
+
 
 const routes = (app) => {
 
@@ -8,7 +10,7 @@ const routes = (app) => {
         res.status(200).send("Quem nasce da carne eh carne, e o que eh nascido do Espirito eh espirito"
         )});
     
-    app.use(express.json(), livros);
+    app.use(express.json(), livros, autores);
 };
 
 export default routes;

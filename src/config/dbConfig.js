@@ -1,9 +1,8 @@
 import mongoose, {mongo} from "mongoose";
 
 
-const password = process.env.password;
 async function conectNaDatabase(){
-    mongoose.connect(process.env.password);
+    mongoose.connect(process.env.DB_CONNECTION_STRING);
     return mongoose.connection;
 }
 

@@ -17,7 +17,7 @@ class LivroController {
             const livro = await Livro.findById(id);
             res.status(200).json({message :`Livro do id => ${id} encontrado` , Livro: livro})
         }catch(error){
-            res.status(500).send({message :`Livro do id => ${id} não foi encontrado`})
+            res.status(500).send({message :`Livro do id => ${id} não foi encontrado`, error: error.message})
         }
     }
 

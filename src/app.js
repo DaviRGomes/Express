@@ -1,6 +1,7 @@
 import express from 'express';
 import conectNaDatabase from './config/dbConfig.js';
 import routes from './routes/index.js';
+import trataErros from '../midlleware/trataErros.js';
 
 
 const conection = await conectNaDatabase();
@@ -15,7 +16,12 @@ conection.once("open", ()=>{
 
 
 const app = express();
-routes(app);
+//midlleware para tratar erros
 
+app.use(trataErros)
+// app.use((req,res)=>{
+//     res.status(200).send({message: "API rodando!"});
+// });
+routes(app);
 
 export default app;

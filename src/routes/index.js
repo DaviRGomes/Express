@@ -6,11 +6,12 @@ import autores from "./autorRoutes.js";
 
 const routes = (app) => {
 
-    app.route("/").get((req, res) => {
-        res.status(200).send("Quem nasce da carne eh carne, e o que eh nascido do Espirito eh espirito"
-        )});
-    
-    app.use(express.json(), livros, autores);
+    // app.route("/").get((req, res) => {
+    //     res.status(200).send("Quem nasce da carne eh carne, e o que eh nascido do Espirito eh espirito"
+    //     )});
+    app.use(express.json());
+    app.use("/livros" ,livros);
+    app.use("/autores" ,autores);
 };
 
 export default routes;

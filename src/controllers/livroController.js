@@ -1,5 +1,5 @@
-import { autor } from '../models/Autor.js';
-import Livro from '../models/livro.js';
+import { autor } from '../models0/index.js';
+import {Livro} from '../models/index.js';
 
 class LivroController {
     static async listar (req, res) {
@@ -58,13 +58,20 @@ class LivroController {
         }
     }
 
-    static async listaLivrosPorEditora (req,res){
-        const editora = req.query.editora;
+    static async listaLivrosPorFiltro(req,res){
+        const {editora, titulo} = req.query;
+
+        const regex = new RegExp(titulo, 'i');
+        const busca = {};
+        if(editora) busca.editora = editora;
+        if(titulo) busca.titulo =regex;
+
         try{
-            const livrosPorEditora = await Livro.find({'editora': editora});
-            res.status(200).json(livrosPorEditora);
+            const livrosResultado = await Livro.find({busca});
+            res.status(200).json(livrosResultado);
         }catch(error){  
-            res.status(500).send({message: `${error.message} - Erro ao buscar livros da editora => ${editora}`})
+            res.status(500).send({message: `${error.message} - 
+                Erro ao buscar livros da editora => ${editora}`})
         }
     }
 };

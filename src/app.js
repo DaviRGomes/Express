@@ -2,6 +2,7 @@ import express from 'express';
 import conectNaDatabase from './config/dbConfig.js';
 import routes from './routes/index.js';
 import trataErros from '../midlleware/trataErros.js';
+import manipula404 from './midlleware/manipula404.js';
 
 
 const conection = await conectNaDatabase();
@@ -18,10 +19,13 @@ conection.once("open", ()=>{
 const app = express();
 //midlleware para tratar erros
 
-app.use(trataErros)
+
 // app.use((req,res)=>{
-//     res.status(200).send({message: "API rodando!"});
-// });
+    //     res.status(200).send({message: "API rodando!"});
+    // });
 routes(app);
+
+app.use(manipula404);
+app.use(trataErros);
 
 export default app;
